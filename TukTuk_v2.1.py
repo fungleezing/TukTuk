@@ -477,7 +477,7 @@ def startThreadedAlbumSearch(artist: str, album: str):
 root = Tk()
 root.title("TukTuk " + softwareVersionString)
 root.geometry("280x440+30+30")
-root.configure(bg='grey')
+root.configure(bg='black')
 root.resizable(False, False)
 
 # Initialize default values
