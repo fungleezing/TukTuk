@@ -21,7 +21,7 @@ import pyperclip
 ############################ Global Variables ############################################################################################################################
 ##########################################################################################################################################################################
 
-softwareVersionString = 'v2.1'
+softwareVersionString = 'v2.2'
 
 urlChunk1 = "https://www.bing.com/images/search?q=album+cover+"
 urlChunk2 = "&go=Search&qs=n&qft=filterui%3Aaspect-square"
@@ -258,7 +258,11 @@ def readConfigSettings():
 		with open(pickleFileName, 'wb') as fi:
 			pickle.dump(configList, fi)
 
-	folder_path_output.set(configList["destination"])
+	if "" ==configList["destination"]:
+		print("Config file doesnt have a destination, defaulting to current directory.")
+		folder_path_output.set(os.getcwd())
+	else:
+		folder_path_output.set(configList["destination"])
 
 def downloadYoutubeVideo():
 	print("Downloading youtube video...")
@@ -473,7 +477,7 @@ def startThreadedAlbumSearch(artist: str, album: str):
 root = Tk()
 root.title("TukTuk " + softwareVersionString)
 root.geometry("280x440+30+30")
-root.configure(bg='black')
+root.configure(bg='grey')
 root.resizable(False, False)
 
 # Initialize default values
@@ -498,11 +502,6 @@ programStatus.set("Paste a YouTube link to get started")									#	inital prompt
 
 readConfigSettings()																		#	import configuration data
 
-# GUI Button BG Image
-button_m = PhotoImage(file="btn_100x25_gray.png")
-button_s = PhotoImage(file="btn_50x25_gray.png")
-button_l = PhotoImage(file="btn_260x25_gray.png")
-
 # GUI Cluster 1 - Output Folder
 spacer = 30
 cluster1x = 10
@@ -514,12 +513,12 @@ tk.Label(textvariable=folder_path_output, bg='black', fg='white', justify=LEFT, 
 
 # Button - Browse for Folder
 btn1 = tk.Button(text='i', command=browseOutput, fg='white')
-btn1.config(image=button_s, compound=CENTER)
+btn1.config(bg='#606060', compound=CENTER)
 btn1.place(x = cluster1x + 220, y = cluster1y + spacer, width=40, height=25)
 
 # Button - Paste Video
 btn2 = tk.Button(text="Paste YouTube Link", command=pasteYouTubeLink, fg='white')
-btn2.config(image=button_l, compound=CENTER)
+btn2.config(bg='#606060', compound=CENTER)
 btn2.place(x = 10, y = cluster1y + 2*spacer, width=260, height=25)
 
 # GUI Cluster 2 - Song Metadata Fields
@@ -544,22 +543,22 @@ cluster3y = cluster2y + 100
 
 # Button - Find Art
 btn3 = tk.Button(text="Find Art", command=lambda: startThreadedAlbumSearch(songArtist.get(), songAlbum.get()), fg='white')
-btn3.config(image=button_m, compound=CENTER)
+btn3.config(bg='#606060', compound=CENTER)
 btn3.place(x = cluster3x, y = cluster3y, width=100, height=25)
 
 # Button - Left, Previous Cover
 btn4 = tk.Button(text=symbol['left'], command=displayPrevAlbumCover, fg='white')
-btn4.config(image=button_s, compound=CENTER)
+btn4.config(bg='#606060', compound=CENTER)
 btn4.place(x = cluster3x, y = cluster3y + spacer, width=45, height=25)
 
 # Button - Right, Next Cover
 btn5 = tk.Button(text=symbol['right'], command=displayNextAlbumCover, fg='white')
-btn5.config(image=button_s, compound=CENTER)
+btn5.config(bg='#606060', compound=CENTER)
 btn5.place(x = cluster3x + 55, y = cluster3y + spacer, width=45, height=25)
 
 # Button - Clear Artwork
 btn6 = tk.Button(text="Clear", command= lambda: displayAlbumCoverPreview(-1), fg='white')
-btn6.config(image=button_m, compound=CENTER)
+btn6.config(bg='#606060', compound=CENTER)
 btn6.place(x = cluster3x, y = cluster3y + 2*spacer, width=100, height=25)
 
 # Label - Cover Information
@@ -575,7 +574,7 @@ tk.Label(textvariable=programStatus, bg='black', fg='white').place(x = cluster4x
 
 # Button - Proceed
 btn7 = tk.Button(text="Proceed", command=startThreadedDownload, fg='white')
-btn7.config(image=button_l, compound=CENTER)
+btn7.config(bg='#606060', compound=CENTER)
 btn7.place(x = cluster4x, y = cluster4y + spacer, width=260, height=25)
 
 
